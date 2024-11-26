@@ -226,6 +226,7 @@ function TransactionListContent({
               {groupedTransactions[date].map(transaction => (
                 <TransactionCard
                   key={transaction.id}
+                  type={transaction.type}
                   title={transaction.description || transaction.category}
                   amount={transaction.amount}
                   date={formatDate(transaction.date)}
