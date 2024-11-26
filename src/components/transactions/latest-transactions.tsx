@@ -75,6 +75,7 @@ export function LatestTransactions({
                     key={transaction.id}
                     title={transaction.description || transaction.category}
                     amount={transaction.amount}
+                    type={transaction.type}
                     date={formatDate(transaction.date)}
                     category={transaction.category}
                     description={transaction.store}
