@@ -12,11 +12,15 @@ import { Button } from "@/components/ui/button"
 interface LatestTransactionsProps {
   transactions: Transaction[]
   className?: string
+  onEdit?: (transaction: Transaction) => void
+  onDelete?: (transaction: Transaction) => void
 }
 
 export function LatestTransactions({ 
   transactions,
-  className 
+  className,
+  onEdit,
+  onDelete 
 }: LatestTransactionsProps) {
   const router = useRouter()
   const showViewAll = transactions.length >= 4
@@ -87,6 +91,8 @@ export function LatestTransactions({
                       "hover:bg-muted/50 transition-colors",
                       "cursor-default"
                     )}
+                    onEdit={onEdit ? () => onEdit(transaction) : undefined}
+                    onDelete={onDelete ? () => onDelete(transaction) : undefined}
                   />
                 ))}
               </div>

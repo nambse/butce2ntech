@@ -5,15 +5,22 @@ import { IncomeExpenseTrend } from "@/components/charts/income-expense-trend"
 import { ExpenseByCategory } from "@/components/charts/expense-by-category"
 import { BudgetProgress } from "@/components/charts/budget-progress"
 import { LatestTransactions } from "@/components/transactions/latest-transactions"
-import { useAppSelector } from "@/store/hooks"
-import { selectCategoriesByType } from "@/store/slices/settingsSlice"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { updateTransaction, deleteTransaction, addTransaction } from "@/store/slices/transactionsSlice"
 import { startOfMonth, endOfMonth } from "date-fns"
 import { formatCurrency } from "@/lib/format"
 import { ClientOnly } from "@/components/client-only"
 import { cn } from "@/lib/utils"
+import { Transaction, TransactionFormData } from "@/types"
+import { useState } from "react"
+import { TransactionForm } from "@/components/transactions/transaction-form"
 
 export default function OverviewPage() {
   const transactions = useAppSelector((state) => state.transactions.items)
+  const dispatch = useAppDispatch()
+
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   // Bu ayki toplamları hesapla
   const currentMonthStart = startOfMonth(new Date())
@@ -44,6 +51,25 @@ export default function OverviewPage() {
       return dateB - dateA
     })
     .slice(0, 5)
+
+  const handleEdit = (transaction: Transaction) => {
+    setSelectedTransaction(transaction)
+    setIsFormOpen(true)
+  }
+
+  const handleDelete = (transaction: Transaction) => {
+    dispatch(deleteTransaction(transaction.id))
+  }
+
+  const handleAddTransaction = (data: TransactionFormData) => {
+    if (selectedTransaction) {
+      dispatch(updateTransaction(selectedTransaction.id, data))
+    } else {
+      dispatch(addTransaction(data))
+    }
+    setIsFormOpen(false)
+    setSelectedTransaction(null)
+  }
 
   return (
     <div className="space-y-6 pt-4">
@@ -102,7 +128,11 @@ export default function OverviewPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <ClientOnly>
-          <LatestTransactions transactions={recentTransactions} />
+          <LatestTransactions 
+            transactions={recentTransactions}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
           <ExpenseByCategory />
         </ClientOnly>
       </div>
@@ -113,6 +143,16 @@ export default function OverviewPage() {
           <BudgetProgress className="md:col-span-1" />
         </ClientOnly>
       </div>
+
+      <TransactionForm
+        open={isFormOpen}
+        onOpenChange={(open) => {
+          setIsFormOpen(open)
+          if (!open) setSelectedTransaction(null)
+        }}
+        onSubmit={handleAddTransaction}
+        initialData={selectedTransaction ?? undefined}
+      />
     </div>
   )
 } 
