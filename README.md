@@ -36,4 +36,5 @@ Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresini açarak
 2. İşlemler sayfasından yeni gelir/gider ekleyebilirsiniz
 3. Bütçeler sayfasından kategori bazlı bütçe limitleri belirleyebilirsiniz
 4. Ana sayfada finansal durumunuzu görsel grafikler ile takip edebilirsiniz
-5. Ayarlar sayfasından tema değişikliği yapabilir ve geliştirici seçeneklerine erişebilirsiniz
+5. Raporlar sayfasından gelir ve giderlerinizi analiz edebilirsiniz
+6. Ayarlar sayfasından tema değişikliği yapabilir ve geliştirici seçeneklerine erişebilirsiniz
