@@ -7,6 +7,7 @@ export interface Transaction {
   category: string
   description: string
   date: string
+  store?: string
   createdAt: string
   updatedAt: string
 }

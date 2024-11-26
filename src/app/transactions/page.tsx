@@ -28,6 +28,7 @@ export default function TransactionsPage() {
       category: transaction.category,
       description: transaction.description,
       date: transaction.date,
+      store: transaction.store
     }))
     setIsFormOpen(false)
   }
